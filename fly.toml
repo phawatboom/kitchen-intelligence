@@ -1,0 +1,21 @@
+app = "collective-kitchen-os" # Change this to a unique name if taken
+primary_region = "lhr" # London (Change to 'iad' for US, 'ams' for Amsterdam etc)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  # Tell our app where the DB file lives (on the mounted volume)
+  DATABASE_URL = "sqlite:///./data/kitchen.db"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[mounts]]
+  source = "kitchen_data" # The name of the volume we will create
+  destination = "/app/data" # Where our app expects the DB to be
